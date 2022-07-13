@@ -36,7 +36,8 @@ int  main(){
     cudaMalloc((void**)&dev_A, size);
     cudaMalloc((void**)&dev_B, size);
     cudaMalloc((void**)&dev_C, size);
-
+    
+    //To populate the matrix some values,
     for(int  i=0;i<n; i++){
         for(int  j=0; j<n; j++){
             host_A[i][j] = 2;
@@ -50,15 +51,11 @@ int  main(){
     dim3 block(BLOCK_SIZE, BLOCK_SIZE);
     dim3 grid(ceil(n/BLOCK_SIZE), ceil(n/BLOCK_SIZE));
 
-    for(int  i = 0; i < N ; i += 1024){
-        
-    }
     matrixMul<<<grid, block>>>(dev_A, dev_B, dev_C, n);
     
-
     cudaMemcpy(host_C, dev_C, size, cudaMemcpyDeviceToHost);
 
-
+    //To check results(values in matrix) are correct or not.
     for(int  i=0;i<n; i++){
         for(int  j=0; j<n; j++){
             if(host_C[i][j] != 4*512){
@@ -66,6 +63,6 @@ int  main(){
             }
         }
     }
-    printf("val = %d\n", host_C[23][31]);
+    //printf("val = %d\n", host_C[23][31]);
     return(0);
 }
